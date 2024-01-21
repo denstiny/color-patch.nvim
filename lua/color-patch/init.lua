@@ -4,23 +4,14 @@
 -- @github      : https://github.com/denstiny
 -- @blog        : https://denstiny.github.io
 
+local apt = vim.api
+local fn = vim.fn
 local M = {}
 local utils = require("color-patch.utils")
 
 function M.setup(opts)
     utils.set_user_config(opts)
-    config = utils.default
-
-    utils.autocmd({ "ColorScheme" }, {
-        callback = function(_)
-            themename = _.match
-            config.all()
-
-            if config.patchs[themename] ~= nil then
-                config.patchs[themename]()
-            end
-        end
-    })
+    utils.use_scheme()
 end
 
 return M

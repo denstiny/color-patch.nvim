@@ -1,9 +1,18 @@
 local M = {
     default = {
+        use = {
+            name = "",
+            lazy = true
+        },
         all = function() end,
-        patch = {}
-    }
+    },
+    group = vim.api.nvim_create_augroup("color-patch", { clear = true })
 }
+
+function M.autocmd(event, opt)
+    opt.group = M.group
+    vim.api.nvim_create_autocmd(event, opt)
+end
 
 ---@param opts table
 function M.set_user_config(opts)
@@ -12,10 +21,43 @@ function M.set_user_config(opts)
     end
 end
 
-M.group = vim.api.nvim_create_augroup("color-patch", { clear = true })
-M.autocmd = function(event, opt)
-    opt.group = M.group
-    vim.api.nvim_create_autocmd(event, opt)
+--- use scheme config
+function M.use_scheme_config()
+    local name = M.default.use.name
+    if M.default[name] ~= nil then
+        M.default[name].config()
+    end
 end
+
+--- switch color theme
+function M.use_scheme()
+    if M.default.use.lazy then
+        M.autocmd({ "UiEnter" }, {
+            callback = function()
+                vim.cmd("colorscheme " .. M.default.use.name)
+                M.use_patch(M.default.use.name)
+            end
+        })
+    else
+        vim.cmd("colorscheme " .. M.default.use.name)
+        M.use_patch(M.default.use.name)
+    end
+end
+
+--- start color theme after use patch
+---@param name string
+function M.use_patch(name)
+    if M.default[name] ~= nil and M.default[name].patch ~= nil then
+        M.default[name].patch()
+    end
+end
+
+M.autocmd({ "ColorScheme" }, {
+    callback = function(_)
+        themename = _.match
+        M.default.all()
+        M.use_patch(themename)
+    end
+})
 
 return M
