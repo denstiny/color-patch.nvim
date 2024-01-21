@@ -1,5 +1,8 @@
 # Preface
 
+https://github.com/denstiny/color-patch.nvim/assets/57088952/692be41f-6c04-42bf-945e-9de8c4bd2819
+
+
 I usually like to make some modifications for the colorschemes I love to match my personal preference. In the past, I had three options:
 
 - Creating a PR for that colorscheme: It's my own preference, and I don't think it's likely to be accepted.
