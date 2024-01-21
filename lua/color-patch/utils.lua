@@ -49,6 +49,7 @@ end
 --- start color theme after use patch
 ---@param name string
 function M.use_patch(name)
+    M.default.all()
     if M.default[name] ~= nil and M.default[name].patch ~= nil then
         M.default[name].patch()
     end
@@ -57,7 +58,6 @@ end
 M.autocmd({ "ColorScheme" }, {
     callback = function(_)
         themename = _.match
-        M.default.all()
         M.use_patch(themename)
     end
 })
