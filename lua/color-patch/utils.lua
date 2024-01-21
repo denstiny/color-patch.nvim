@@ -34,11 +34,13 @@ function M.use_scheme()
     if M.default.use.lazy then
         M.autocmd({ "UiEnter" }, {
             callback = function()
+                M.use_scheme_config()
                 vim.cmd("colorscheme " .. M.default.use.name)
                 M.use_patch(M.default.use.name)
             end
         })
     else
+        M.use_scheme_config()
         vim.cmd("colorscheme " .. M.default.use.name)
         M.use_patch(M.default.use.name)
     end
